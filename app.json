@@ -1,0 +1,12 @@
+{
+  "name": "food-product-react",
+  "displayName": "food-product-react",
+  "expo": {
+    "name": "food-product-react",
+    "slug": "food-product-react",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
