@@ -31,6 +31,10 @@ import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import android.os.StrictMode; 
+import android.os.Build; 
+import android.os.Handler;
+
 public class MainApplication extends Application implements ReactApplication {
   private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(
     new BasePackageList().getPackageList()
@@ -84,7 +88,13 @@ public class MainApplication extends Application implements ReactApplication {
   }
 
   @Override
+
   public void onCreate() {
+
+     if (BuildConfig.DEBUG) {
+      strictModePermitAll();
+    }
+
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
 
@@ -93,6 +103,22 @@ public class MainApplication extends Application implements ReactApplication {
     }
 
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+  }
+
+   private static void strictModePermitAll() {
+    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    StrictMode.setThreadPolicy(policy);
+
+    if (Build.VERSION.SDK_INT >= 16) {
+      //restore strict mode after onCreate() returns. https://issuetracker.google.com/issues/36951662
+      new Handler().postAtFrontOfQueue(new Runnable() {
+        @Override
+        public void run() {
+          StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+          StrictMode.setThreadPolicy(policy);
+        }
+      });
+    }
   }
 
   /**
