@@ -41,8 +41,23 @@ export default function App() {
     }
   };
 
+  const updateUser = (newUserData) => {
+    if (newUserData) {
+      AsyncStorage.getItem("USER_DATA").then((value) => {
+        if (value) {
+          try {
+            const parsedUser = JSON.parse(value);
+            saveUser({ ...parsedUser, user: newUserData });
+          } catch (error) {
+            AsyncStorage.removeItem("USER_DATA");
+          }
+        }
+      });
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, saveUser, setUser }}>
+    <AuthContext.Provider value={{ user, saveUser, setUser, updateUser }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Loading" component={LoadingScreen} />

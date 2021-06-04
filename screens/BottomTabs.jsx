@@ -27,7 +27,7 @@ function BottomTabs() {
         <Tab.Screen
           name="Favorites"
           component={Favorites}
-          options={{ tabBarIcon: () => <Icon name="heart" />, backgroundColor: "red" }}
+          options={{ tabBarIcon: () => <Icon name="heart" style={{ marginLeft: -5 }} /> }}
         />
         <Tab.Screen name="MyProfile" component={MyProfile} options={{ tabBarIcon: () => <Icon name="person" /> }} />
         <Tab.Screen name="Recent" component={Recent} options={{ tabBarIcon: () => <Icon name="alarm" /> }} />

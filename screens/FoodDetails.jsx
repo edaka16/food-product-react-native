@@ -1,8 +1,9 @@
 import { Button, Text, Icon } from "native-base";
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { SafeAreaView, StyleSheet, TouchableOpacity, View, Image, ScrollView } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { useNavigation } from "@react-navigation/native";
+import AuthContext from "../AuthContext";
 
 function FoodDetails({ route }) {
   const { foodDetails } = route.params;
@@ -58,6 +59,14 @@ function FoodDetails({ route }) {
     },
   });
 
+  const getIsFavorite = () => {
+    if (favoriteProducts) {
+      return favoriteProducts.is_favorite;
+    }
+
+    return foodDetails.is_favorite;
+  };
+
   const renderItem = ({ item, index }) => {
     const imageUrl = "http://192.168.1.31:1337" + item.url;
     return (
@@ -83,6 +92,41 @@ function FoodDetails({ route }) {
     navigation.goBack();
   }
 
+  const context = useContext(AuthContext);
+  const [favoriteProducts, setfavoriteProducts] = useState();
+
+  const currentProductUrl = `http://192.168.1.31:1337/foods-products/${foodDetails.id}`;
+
+  useEffect(() => {
+    fetch(currentProductUrl)
+      .then((response) => response.json())
+      .then((json) => {
+        setfavoriteProducts(json);
+      })
+      .catch((error) => {
+        console.error({ error });
+      });
+  }, [foodDetails.id]);
+
+  const addProductToFavorites = (isFavorite) => {
+    fetch(currentProductUrl, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${context.user.jwt}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ is_favorite: !isFavorite }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        setfavoriteProducts(json);
+      })
+      .catch((error) => {
+        console.error({ error });
+      });
+  };
+  console.log("🚀 ~ file: FoodDetails.jsx ~ line 110 ~ FoodDetails ~ favoriteProducts", favoriteProducts);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F6F6F9", paddingTop: 50 }}>
       <ScrollView>
@@ -91,9 +135,13 @@ function FoodDetails({ route }) {
             <Text style={{ fontSize: 40, lineHeight: 50, color: "black", padding: 10 }}>‹</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity title="Go back" onPress={() => onBackPressed()}>
+          <TouchableOpacity title="Add to Favorite" onPress={() => addProductToFavorites(getIsFavorite())}>
             <Text style={{ fontSize: 40, lineHeight: 50, color: "black" }}>
-              <Icon name="heart" />
+              {getIsFavorite() ? (
+                <Icon name="heart" style={{ color: "red" }} />
+              ) : (
+                <Icon name="heart" style={{ color: "black" }} />
+              )}
             </Text>
           </TouchableOpacity>
         </View>

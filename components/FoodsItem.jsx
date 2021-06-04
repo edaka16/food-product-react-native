@@ -29,7 +29,13 @@ function FoodsItem({ item }) {
 
   const imageUrl = "http://192.168.1.31:1337" + item.product_images[0].url;
   return (
-    <Container style={{ backgroundColor: "transparent", marginBottom: 10, height: "auto" }}>
+    <Container
+      style={{
+        backgroundColor: "transparent",
+        marginBottom: 10,
+        height: "auto",
+      }}
+    >
       <Content style={{ marginHorizontal: 0, marginVertical: 0 }}>
         <Card
           style={{
@@ -51,6 +57,14 @@ function FoodsItem({ item }) {
               justifyContent: "center",
               marginTop: 30,
               borderRadius: 30,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 3,
+              },
+              shadowOpacity: 0.1,
+              shadowRadius: 3.5,
+              elevation: 5,
             }}
           >
             <TouchableOpacity onPress={() => goToFoodDetails()}>

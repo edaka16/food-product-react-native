@@ -26,6 +26,14 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "100%",
     height: 200,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.5,
+    elevation: 5,
   },
   evenCardStyles: {
     backgroundColor: "white",
@@ -35,6 +43,14 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     width: "100%",
     height: 200,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.5,
+    elevation: 5,
   },
 });
 
